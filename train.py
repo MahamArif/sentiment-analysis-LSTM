@@ -34,11 +34,7 @@ dataset = dataset[['sentiment','text']]
 
 # Replacing the values.
 dataset['sentiment'] = dataset['sentiment'].replace(4,1)
-
 dataset.head()
-
-ax = dataset.groupby('sentiment').count().plot(kind='bar', title='Distribution of data', legend=False)
-ax = ax.set_xticklabels(['Negative','Positive'], rotation=0)
 
 # Reading contractions.csv and storing it as a dict.
 contractions = pd.read_csv('./contractions.csv', index_col='Contraction')
