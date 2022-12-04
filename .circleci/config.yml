@@ -4,7 +4,8 @@ version: 2.1
 executors:
   docker-publisher: 
     environment:
-      IMAGE_NAME: mahamarif/sentiment-analysis-s140-lstm
+      - IMAGE_NAME: mahamarif/sentiment-analysis-s140-lstm
+        GIT_LFS_SKIP_SMUDGE: 1
     docker: # Each job requires specifying an executor
     # (either docker, macos, or machine), see
       - image: circleci/node:latest
@@ -18,6 +19,16 @@ jobs:
  
       steps: 
         - checkout
+        - run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+        - restore_cache:
+          keys:
+            - v1-lfscache-{{ checksum ".lfs-assets-id" }}
+            - v1-lfscache-
+        - run: git lfs pull
+        - save_cache:
+          paths:
+            - .git/lfs
+          key: v1-lfscache-{{ checksum ".lfs-assets-id" }}
         - setup_remote_docker
         - run: 
             name: Publish Docker Image to Docker Hub
