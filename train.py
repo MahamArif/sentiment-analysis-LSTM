@@ -28,13 +28,13 @@ from tensorflow.keras.layers import Bidirectional, GlobalMaxPool1D, Dense, LSTM,
 DATASET_COLUMNS  = ["sentiment", "ids", "date", "flag", "user", "text"]
 DATASET_ENCODING = "ISO-8859-1"
 dataset = pd.read_csv('./data.csv', encoding=DATASET_ENCODING, names=DATASET_COLUMNS)
-dataset.head()
+print(dataset.head())
 
 dataset = dataset[['sentiment','text']]
 
 # Replacing the values.
 dataset['sentiment'] = dataset['sentiment'].replace(4,1)
-dataset.head()
+print(dataset.head())
 
 # Reading contractions.csv and storing it as a dict.
 contractions = pd.read_csv('./contractions.csv', index_col='Contraction')
@@ -57,6 +57,7 @@ neutralemoji      = r"[8:=;]['`\-]?[\/|l*]"
 lolemoji          = r"[8:=;]['`\-]?p+"
 
 def preprocess_apply(tweet):
+    print(tweet)
     tweet = tweet.lower()
 
     # Replace all URls with '<url>'
